@@ -9,20 +9,30 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  void getData() async{
-
-    Response response = await get('https://jsonplaceholder.typicode.com/todos/1');
+  void getTime() async{
+    // make the request
+    Response response = await get('http://worldtimeapi.org/api/timezone/Asia/Dhaka');
     Map data = jsonDecode(response.body);
-    print(data);
-    print(data['title']);
-  }
+    //print(data);
 
-  int counter = 0;
+    // get properties from data
+    String datetime = data['utc_datetime'];           // We can use 'datetime' directly to get local time
+    String offset = data['utc_offset'].substring(1,3);// But lets just follow the tutorial for now.
+    //print(datetime);
+    //print(offset);
+
+    // create Datetime object
+    DateTime now = DateTime.parse(datetime);
+    now = now.add(new Duration(hours: int.parse(offset)));
+    print(now);
+
+
+  }
 
   @override
   void initState() {
     super.initState();
-    getData();
+    getTime();
   }
 
 
